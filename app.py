@@ -10,6 +10,7 @@ import gradio as gr
 import math
 import subprocess
 import imageio_ffmpeg
+import time
 from collections import deque
 from ultralytics import YOLO
 from common.model_poseformer import PoseTransformerV2 as Model
@@ -48,7 +49,7 @@ BONE_COLORS = [
     RIGHT_COLOR, RIGHT_COLOR, RIGHT_COLOR
 ]
 
-# ─── Helper Functions ───
+#  Helper Functions 
 def yolo_to_h36m(yolo_points):
     h36m_pose = np.zeros((17, 2))
     pelvis = (yolo_points[11] + yolo_points[12]) / 2.0
@@ -200,10 +201,9 @@ def process_video(video_path, progress=gr.Progress()):
 
     # Convert input video to compatible format
     ffmpeg_path = imageio_ffmpeg.get_ffmpeg_exe()
-    import time
     uid = str(int(time.time()))
-    converted_input = os.path.join('D:/tmp', f'converted_input_{uid}.mp4')
-    os.makedirs('D:/tmp', exist_ok=True)
+    tmp_dir = tempfile.gettempdir()
+    converted_input = os.path.join(tmp_dir, f'converted_input_{uid}.mp4')
     subprocess.run([ffmpeg_path, '-y', '-i', video_path, '-vcodec', 'libx264', '-pix_fmt', 'yuv420p', converted_input], capture_output=True)
     video_path = converted_input
 
@@ -221,8 +221,8 @@ def process_video(video_path, progress=gr.Progress()):
     for _ in range(RECEPTIVE_FIELD):
         pose_queue.append(dummy_pose)
 
-    tmp_2d = os.path.join('D:/tmp', f'output_2d_{uid}.mp4')
-    tmp_3d = os.path.join('D:/tmp', f'output_3d_{uid}.mp4')
+    tmp_2d = os.path.join(tmp_dir, f'output_2d_{uid}.mp4')
+    tmp_3d = os.path.join(tmp_dir, f'output_3d_{uid}.mp4')
 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out_2d = cv2.VideoWriter(tmp_2d, fourcc, fps, (width, height))
@@ -269,8 +269,8 @@ def process_video(video_path, progress=gr.Progress()):
 
     # Re-encode for browser playback
     ffmpeg_path = imageio_ffmpeg.get_ffmpeg_exe()
-    tmp_2d_h264 = os.path.join('D:/tmp', f'output_2d_h264_{uid}.mp4')
-    tmp_3d_h264 = os.path.join('D:/tmp', f'output_3d_h264_{uid}.mp4')
+    tmp_2d_h264 = os.path.join(tmp_dir, f'output_2d_h264_{uid}.mp4')
+    tmp_3d_h264 = os.path.join(tmp_dir, f'output_3d_h264_{uid}.mp4')
     subprocess.run([ffmpeg_path, '-y', '-i', tmp_2d, '-vcodec', 'libx264', '-pix_fmt', 'yuv420p', tmp_2d_h264], capture_output=True)
     subprocess.run([ffmpeg_path, '-y', '-i', tmp_3d, '-vcodec', 'libx264', '-pix_fmt', 'yuv420p', tmp_3d_h264], capture_output=True)
 
