@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+ 
+# Model checkpoints 
+model/checkpoint/*.pt
+model/checkpoint/*.bin
+ 
+# FFmpeg binary
+ffmpeg.exe
+ 
+# Temp files
+*.mp4
+!demo/*.mp4
+ 
+# IDE
+.vscode/
+.idea/
+ 
+# OS
+.DS_Store
+Thumbs.db
+ 
+# Virtual environments
+poseformerv2_env/
+venv/
+.env/
