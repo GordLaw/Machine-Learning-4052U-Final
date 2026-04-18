@@ -87,7 +87,17 @@ def extract_best_person_pose(yolo_results):
         return None
     if len(yolo_results[0].keypoints.xy) == 0:
         return None
-    keypoints = yolo_results[0].keypoints.xy[0].cpu().numpy()
+        # Pick the highest-confidence person instead of just the first one
+    boxes = yolo_results[0].boxes
+    if boxes is None or len(boxes) == 0:
+        return None
+    
+    best_idx = boxes.conf.argmax().item()
+    
+    # Filter out low-confidence detections
+    if boxes.conf[best_idx] < 0.5:
+        return None
+    keypoints = yolo_results[0].keypoints.xy[best_idx].cpu().numpy()
     return keypoints
 
 def project_3d_to_2d(pose_3d, img_size=500, elev=15, azim=70):
