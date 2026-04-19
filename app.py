@@ -356,7 +356,7 @@ with gr.Blocks(
                 inputs=[video_input],
                 outputs=[video_2d, video_3d]
             )
-        with gr.Tab("Webcam (Live)"):
+        with gr.Tab("Webcam (Capture)"):
                 with gr.Tabs():
                     with gr.Tab("Snapshot"):
                         gr.Markdown("Click the **camera icon** to take a snapshot, then click **Run Pose Estimation on Frame** to see results.")
@@ -393,10 +393,26 @@ with gr.Blocks(
                             inputs=[webcam_video],
                             outputs=[record_2d, record_3d]
                         )
+                        
+        with gr.Tab("Live Stream"):
+            gr.Markdown("Live webcam streaming — frames are processed in real-time as they come in.")
+
+            with gr.Row():
+                stream_input = gr.Image(sources=["webcam"], streaming=True, label="Webcam Input", type="numpy")
+
+            with gr.Row():
+                stream_2d = gr.Image(label="2D Pose Detection")
+                stream_3d = gr.Image(label="3D Skeleton")
+
+            stream_input.stream(
+                fn=process_webcam_frame,
+                inputs=[stream_input],
+                outputs=[stream_2d, stream_3d]
+            )
         
     gr.Markdown(
         """
-        ---
+        ---s
         **Pipeline:** YOLO v26m-Pose detects 2D keypoints → mapped to Human3.6M format →
         PoseFormerV2 lifts 2D sequence to 3D pose using frequency-domain transformer.
 
