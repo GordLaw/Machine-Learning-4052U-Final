@@ -16,7 +16,7 @@ For our project, this was used as the base of our implementation and augmented t
 
 ### Video Demo
 <video width="320" height="240" controls>
-  <source src="assets\2026-04-19 15-13-58.mp4" type="video/mp4">
+  <source src="demo\2026-04-19 15-13-58.mp4" type="video/mp4">
 </video>
 
 ### Tech Stack
