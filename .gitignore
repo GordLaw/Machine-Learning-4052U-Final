@@ -10,10 +10,6 @@ model/checkpoint/*.bin
 # FFmpeg binary
 ffmpeg.exe
  
-# Temp files
-*.mp4
-!demo/*.mp4
- 
 # IDE
 .vscode/
 .idea/
@@ -25,4 +21,5 @@ Thumbs.db
 # Virtual environments
 poseformerv2_env/
 venv/
+.venv/
 .env/
