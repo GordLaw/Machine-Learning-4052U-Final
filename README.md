@@ -10,7 +10,7 @@ Description: An end-to-end application that estimates 3D human body pose from si
 The goal of this project is to create a 3D human pose estimation for a live video stream. Reconstructing 3D joint positions of a person from 2D images.
 
 ### Neural Network Components
-In the original implementation, PoseFormerV2 builds off its previous iteration and uses several differnet models in its pipeline to create its 3D estimations from video inputs. This is done by using a YOLO object detection model along side a specially trained HRNet to create 2D keypoints estimations. This would then be inputted into the poseformer model build on a spactial transformer architecture trained on the Human3.6M dataset to lift the 2D points into 3D space. 
+In the original implementation, PoseFormerV2 builds off its previous iteration and uses several different models in its pipeline to create its 3D estimations from video inputs. This is done by using a YOLO object detection model along side a specially trained HRNet to create 2D keypoints estimations. This would then be inputted into the poseformer model build on a spatial transformer architecture trained on the Human3.6M dataset to lift the 2D points into 3D space. 
 
 For our project, this was used as the base of our implementation and augmented to include live video inferences. In this, we started by simplifying the original 2D pose estimation pipeline, replacing it entirely with a single YOLOv26-pose model for 2D keypoint pose estimation. Next, avoiding the need to retrain the original  poseformer model, the 2D keypoints estimated by YOLO are mapped from its COCO format to a H36M format and normalized before inference. Finally, since PoseFormer looks at a window of frames centered around a target frame for creating its estimations, it cannot normally run with a live video stream. To address this issue, we applied a small buffer to the queue of frames so it would always have access to a full temporal window of frames, enabling a live video stream.
 
@@ -50,7 +50,7 @@ git clone https://github.com/GordLaw/Machine-Learning-4052U-Final.git
 python -m venv .venv
 .venv\Scripts\activate
 ```
-3. Install pyhton requirements
+3. Install python requirements
 ```
 pip install -r requirements.txt
 ```
