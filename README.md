@@ -15,9 +15,7 @@ In the original implementation, PoseFormerV2 builds off its previous iteration a
 For our project, this was used as the base of our implementation and augmented to include live video inferences. In this, we started by simplifying the original 2D pose estimation pipeline, replacing it entirely with a single YOLOv26-pose model for 2D keypoint pose estimation. Next, avoiding the need to retrain the original  poseformer model, the 2D keypoints estimated by YOLO are mapped from its COCO format to a H36M format and normalized before inference. Finally, since PoseFormer looks at a window of frames centered around a target frame for creating its estimations, it cannot normally run with a live video stream. To address this issue, we applied a small buffer to the queue of frames so it would always have access to a full temporal window of frames, enabling a live video stream.
 
 ### Video Demo
-<video width="100%" controls>
-  <source src="./demo/demo.mp4" type="video/mp4">
-</video>
+[Watch the full project presentation on YouTube](https://youtu.be/4mqrEkhgpvY)
 
 ### Tech Stack
 * Frontend: Gradio
